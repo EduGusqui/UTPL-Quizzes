@@ -2,7 +2,7 @@
 
 require_once("WebApi/service/RestService.php");
 require_once("WebApi/service/UserService.php");
-require_once("WebApi/model/User.php");
+require_once("WebApi/model/UserModel.php");
 
 class UserController extends RestService {
 	private $service;
@@ -17,12 +17,17 @@ class UserController extends RestService {
 			$users = $this->service->getAll();
 			$listUsers;
 			for($i = 0; $i < count($users); $i++) {
-				$user = new User();
+				$user = new UserModel();
 				$user->Id = $users[$i]->id;
 				$user->Name = $users[$i]->nombre;
-				$user->Username = $users[$i]->nombre_usuario;
+				$user->Identification = $users[$i]->cedula;
 				$user->Email = $users[$i]->email;
+				$user->Phone = $users[$i]->telefono;
+				$user->ResidenceCity = $users[$i]->ciudad_residencia;
+				$user->Username = $users[$i]->nombre_usuario;
+				$user->Password = $users[$i]->contrasenia;
 				$user->Status = $users[$i]->estado;
+				$user->IdRol = $users[$i]->idRol;
 				$listUsers[$i] = $user;
 			}
 			
@@ -40,17 +45,21 @@ class UserController extends RestService {
 	public function getById($id) {
 		try {
 			$data = $this->service->getById($id);
-			
-			$user = new User();
-			$user->Id = $data->id;
-			$user->Name = $data->nombre;
-			$user->Username = $data->nombre_usuario;
-			$user->Email = $data->email;
-			$user->Status = $data->estado;
-			
-			if ($user->Id > 0) {
+			if ($data != null) {
+				$user = new UserModel();
+				$user->Id = $data->id;
+				$user->Name = $data->nombre;
+				$user->Identification = $data->cedula;
+				$user->Email = $data->email;
+				$user->Phone = $data->telefono;
+				$user->ResidenceCity = $data->ciudad_residencia;
+				$user->Username = $data->nombre_usuario;
+				$user->Password = $data->contrasenia;
+				$user->Status = $data->estado;
+				$user->IdRol = $data->idRol;
+
 				$this->response($this->json($user), 200);
-			}else {
+			} else {
 				$this->response('', 404);
 			}
 		}catch (Exception $e) {

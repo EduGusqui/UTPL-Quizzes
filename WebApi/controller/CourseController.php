@@ -2,7 +2,7 @@
 
 require_once("WebApi/service/RestService.php");
 require_once("WebApi/service/CourseService.php");
-require_once("WebApi/model/Course.php");
+require_once("WebApi/model/CourseModel.php");
 
 class CourseController extends RestService {
 	private $service;
@@ -17,7 +17,7 @@ class CourseController extends RestService {
 			$courses = $this->service->getAll();
 			$listCourses;
 			for($i = 0; $i < count($courses); $i++) {
-				$course = new Course();
+				$course = new CourseModel();
 				$course->Id = $courses[$i]->id;
 				$course->Name = $courses[$i]->nombre;
 				$course->Status = $courses[$i]->estado;
@@ -40,7 +40,7 @@ class CourseController extends RestService {
 		try {
 			$data = $this->service->getById($id);
 			
-			$course = new Course();
+			$course = new CourseModel();
 			$course->Id = $data->id;
 			$course->Name = $data->nombre;
 			$course->Status = $data->estado;

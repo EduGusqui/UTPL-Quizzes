@@ -1,5 +1,5 @@
 <?php
-class Answer {
+class AnswerModel {
 	public $Id;
 	public $Description;
 	public $Correct;

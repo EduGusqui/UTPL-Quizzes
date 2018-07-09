@@ -1,8 +1,8 @@
 <?php
-class User {
+class UserModel {
 	public $Id;
 	public $Name;
-	public $Indetification;
+	public $Identification;
 	public $Email;
 	public $Phone;
 	public $ResidenceCity;

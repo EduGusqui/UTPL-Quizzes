@@ -2,7 +2,7 @@
 
 require_once("WebApi/service/RestService.php");
 require_once("WebApi/service/QuizzeService.php");
-require_once("WebApi/model/Quizze.php");
+require_once("WebApi/model/QuizzeModel.php");
 
 class QuizzeController extends RestService {
 	private $service;
@@ -17,7 +17,7 @@ class QuizzeController extends RestService {
 			$quizzes = $this->service->getAll();
 			$listQuizzes;
 			for($i = 0; $i < count($quizzes); $i++) {
-				$quizze = new Quizze();
+				$quizze = new QuizzeModel();
 				$quizze->Id = $quizzes[$i]->id;
 				$quizze->Name = $quizzes[$i]->nombre;
 				$quizze->Status = $quizzes[$i]->estado;
@@ -41,7 +41,7 @@ class QuizzeController extends RestService {
 		try {
 			$data = $this->service->getById($id);
 			
-			$quizze = new Quizze();
+			$quizze = new QuizzeModel();
 			$quizze->Id = $data->id;
 			$quizze->Name = $data->nombre;
 			$quizze->Status = $data->estado;

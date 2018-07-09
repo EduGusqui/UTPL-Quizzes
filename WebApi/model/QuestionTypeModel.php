@@ -1,5 +1,5 @@
 <?php
-class QuestionType {
+class QuestionTypeModel {
 	public $Id;
 	public $Name;
 	public $Status;

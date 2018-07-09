@@ -2,7 +2,7 @@
 
 require_once("WebApi/service/RestService.php");
 require_once("WebApi/service/QuestionService.php");
-require_once("WebApi/model/Question.php");
+require_once("WebApi/model/QuestionModel.php");
 
 class QuestionController extends RestService {
 	private $service;
@@ -17,7 +17,7 @@ class QuestionController extends RestService {
 			$questions = $this->service->getAll();
 			$listQuestions;
 			for($i = 0; $i < count($questions); $i++) {
-				$question = new Question();
+				$question = new QuestionModel();
 				$question->Id = $questions[$i]->id;
 				$question->Description = $questions[$i]->descripcion;
 				$question->Status = $questions[$i]->estado;
@@ -41,7 +41,7 @@ class QuestionController extends RestService {
 		try {
 			$data = $this->service->getById($id);
 			
-			$question = new Question();
+			$question = new QuestionModel();
 			$question->Id = $data->id;
 			$question->Description = $data->descripcion;
 			$question->Status = $data->estado;
