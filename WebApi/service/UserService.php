@@ -32,7 +32,7 @@ class UserService implements IBaseService {
 			$user = json_decode($data);
 			$db = Database::getConnection();
 			$sql = "insert into usuario (nombre,cedula,email,telefono,ciudad_residencia,nombre_usuario,contrasenia,estado,idRol) values (?,?,?,?,?,?,?,?,?)";
-			$db->execute($sql, array($user->Name,"1714897806",$user->Email,"023519110","Quito",$user->Username,"123456","ACT","1"));
+			$db->execute($sql, array($user->Name,$user->Identification,$user->Email,$user->Phone,$user->ResidenceCity,$user->Username,$user->Password,"ACT",$user->IdRol));
 			return true;
 		} catch (Exeption $e) {
 			print "Error!: " . $e->getMessage();
@@ -45,7 +45,7 @@ class UserService implements IBaseService {
   		$user = json_decode($data);
   		$db = Database::getConnection();
   		$sql = "update usuario set nombre=?,cedula=?,email=?,telefono=?,ciudad_residencia=?,nombre_usuario=?,idRol=? where id=?";
-  		$db->execute($sql, array($user->Name,"1714897806",$user->Email,"023519110","Quito",$user->Username,"1",$user->Id));
+  		$db->execute($sql, array($user->Name,$user->Identification,$user->Email,$user->Phone,$user->ResidenceCity,$user->Username,$user->IdRol,$user->Id));
   		return true;
   	} catch (Exeption $e) {
   		print "Error!: " . $e->getMessage();
