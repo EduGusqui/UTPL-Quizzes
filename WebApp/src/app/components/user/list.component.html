@@ -1,0 +1,67 @@
+<div class="wrapper wrapper-content">
+	<div class="ibox-content">
+		<h3><b>Listado de Usuarios</b></h3>
+		<br/>
+		<a class="btn btn-w-m btn-success" routerLink="./create">Nuevo</a>
+		<br/>
+		<br/>
+		<div>
+			<table class="table-responsive table-hover">
+				<thead>
+					<tr>
+						<th>Nombre</th>
+						<th>Cédula</th>
+						<th>Email</th>
+						<th>Teléfono</th>
+						<th>Ciudad Residencia</th>
+						<th>Nombre usuario</th>
+						<th>Estado</th>
+						<th>Rol</th>
+						<th>Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let user of users">
+						<td>{{user.Name}}</td>
+						<td>{{user.Identification}}</td>
+						<td>{{user.Email}}</td>
+						<td>{{user.Phone}}</td>
+						<td>{{user.ResidenceCity}}</td>
+						<td>{{user.Username}}</td>
+						<td>{{user.Status}}</td>
+						<td>{{user.Rol.Name}}</td>
+						<td class="acctions-center">
+							<a class="btn btn-info" title="Editar" routerLink="/edit/{{user.Id}}">Editar</a>
+							<a class="btn btn-info" title="Eliminar" (click)="delete('modal', user.Id)">Eliminar</a>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<th>Nombre</th>
+						<th>Cédula</th>
+						<th>Email</th>
+						<th>Teléfono</th>
+						<th>Ciudad Residencia</th>
+						<th>Nombre usuario</th>
+						<th>Estado</th>
+						<th>Rol</th>
+						<th>Acciones</th>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+	<modal id="modal" tabindex="-1">
+		<div class="modal">
+			<div class="modal-body">
+				<h2>{{title}}</h2>
+				<p>{{description}}</p>
+				<button *ngIf="!showButton" class="btn btn-success" (click)="closeModal('modal');">OK</button>
+				<button *ngIf="showButton" class="btn btn-success" (click)="deleteUser();">Si, eliminar</button>
+				<button *ngIf="showButton" class="btn btn-danger" (click)="closeModal('modal');">No</button>
+			</div>
+		</div>
+		<div class="modal-background"></div>
+	</modal>
+</div>

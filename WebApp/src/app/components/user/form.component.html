@@ -1,0 +1,35 @@
+<div class="wrapper wrapper-content">
+		<div class="ibox-content">
+			<h3><b>Crear usuario</b></h3>
+			<br/>
+			<form (ngSubmit)="form.form.valid && save()" #form="ngForm" novalidate>
+				<div class="row form-group">
+					<label class="col-lg-1 control-label" for="fullName">Nombres</label>
+					<div class="col-lg-5">
+						<input class="form-control" type="text" name="fullName" [(ngModel)]="user.FullName" #fullName="ngModel" [ngClass]="{ 'is-invalid': form.submitted && fullName.invalid }" required />
+						<div *ngIf="form.submitted && fullName.invalid">
+							<div class="fields-errors" *ngIf="fullName.errors.required">Campo requerido</div>
+						</div>
+					</div>
+					<label class="col-lg-1 control-label" for="fullName">Nombres</label>
+					<div class="col-lg-5">
+						<input class="form-control" type="text" name="fullName" [(ngModel)]="user.FullName" #fullName="ngModel" [ngClass]="{ 'is-invalid': form.submitted && fullName.invalid }" required />
+						<div *ngIf="form.submitted && fullName.invalid">
+							<div class="fields-errors" *ngIf="fullName.errors.required">Campo requerido</div>
+						</div>
+					</div>
+					<!--<label for="fullName">Cédula</label>
+					<div class="col-lg-4">
+						<input type="text" name="fullName" [(ngModel)]="user.FullName" #fullName="ngModel" [ngClass]="{ 'is-invalid': form.submitted && fullName.invalid }" required />
+						<div *ngIf="form.submitted && fullName.invalid" class="invalid-feedback">
+							<div class="fields-errors" *ngIf="fullName.errors.required">Campo requerido</div>
+						</div>
+					</di-->
+				</div>
+				<div class="form-group">
+					<button class="btn btn-success">Guardar</button>
+					<a routerLink="/users" class="btn btn-danger">Cancelar</a>
+				</div>
+			</form>
+		</div>
+	</div>

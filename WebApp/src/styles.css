@@ -1,0 +1,227 @@
+/*Estilo general de la página*/
+*{
+  margin: 0px;
+  padding: 0px;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  text-decoration: none;
+  word-wrap: break-word;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  clear: both;
+}
+
+html,
+body {
+  height: 100%;
+  background-color: #f2f2f3;
+  font-size: 13px;
+}
+
+/*Estilos h1*/
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 100;
+}
+
+h1 {
+  font-size: 30px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 16px;
+}
+
+h4 {
+  font-size: 14px;
+}
+
+h5 {
+  font-size: 12px;
+}
+
+h6 {
+  font-size: 10px;
+}
+h3,
+h4,
+h5 {
+  margin-top: 5px;
+  font-weight: 600;
+}
+
+/*Contenedor principal*/
+#wrapper {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+/*Estilo check menu*/
+#btn-menu,#icon-menu {
+  display: none;
+}
+
+/*Estilo icono menu*/
+#icon-menu {
+  width: 40px;
+}
+
+/*Estilo menu*/
+.navbar-default {
+  background-color: #00457E;
+  border-color: #2f4050;
+}
+
+.navbar-static-side {
+  z-index: 2001;
+  position: absolute;
+  color: #2f4050;
+  width: 220px;
+  height: 100%;
+}
+
+.nav {
+  display: block;
+}
+
+.nav > li > a {
+  color: #a7b1c2;
+  font-weight: 600;
+  padding: 14px 20px 14px 25px;
+}
+
+.nav > li.active > a {
+  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-left: 2px solid #ffffff;
+}
+
+.nav-header {
+  padding: 15px 25px 15px;
+  border-bottom: 2px solid #d4bc12;
+}
+
+.nav-header .logo-utpl img {
+  height: 60px;
+}
+
+/*Barra de menu lateral izquierdo fijo*/
+.sidenav {
+  width: 220px;
+  position: absolute;
+  z-index: 2001;
+  overflow-x: hidden;
+  padding: 8px 0;
+}
+
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 13px;
+  display: block;
+}
+
+.sidenav a:hover {
+  background-color: #062459;
+  
+}
+
+/*Contenedor de pagina*/
+#page-wrapper {
+  position: relative !important;
+  margin: 0 0 0 220px;
+}
+
+/*Background contenedor de pagina*/
+.gray-bg {
+  background-color: #ffffff;
+}
+
+/*Estilo header*/
+header {
+  background: white;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 10px 20px;
+  position: fixed;
+  margin-left: 220px;
+}
+
+/*Estilo Pie de pagina*/
+footer {
+  background: white;
+  border-top: 1px solid #e7eaec;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 10px 20px;
+  position: fixed;
+  margin-left: 220px;
+}
+
+/*Estilo pantalla extra small*/
+@media(max-width: 767.99px) {
+  /*Mostrar icono menu*/
+  #icon-menu {
+    display: block;
+  }
+
+  /*Barra menu responsive*/
+  .navbar-static-side {
+    height: 50px;
+    width: 55px;
+  }
+
+  /*Estilo responsive icono menu*/
+  #icon-menu {
+    margin-top: 5px;
+    margin-left: 5px;
+  }
+  
+  /*Backgorund barra menu*/
+  .navbar-default {
+    background-color: #ffffff;
+  }
+
+  /*Ocultar menu*/
+  .sidenav {
+    display: none;
+  }
+
+  /*Header*/
+  /*#page-wrapper {
+    margin-left: 50px;
+  }*/
+
+  header {
+    margin-left: 55px;
+    height: 50px;
+  }
+
+  header h1 {
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+  #btn-menu:checked ~ .sidenav {
+    display: block;
+    margin: 0 7px 0 0;
+    width: 220px;
+    background-color: #00457E;
+  }
+
+  /*Ocultar log UTPL*/
+  .nav-header {
+    display: none;
+  }
+
+  footer {
+    margin: 0;
+  }
+}
