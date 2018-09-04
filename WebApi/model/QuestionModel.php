@@ -3,7 +3,8 @@ class QuestionModel {
 	public $Id;
 	public $Description;
 	public $Status;
-	public $IdQuizze;
-	public $IdQuestionType;
+	public $Quizze;
+	public $QuestionType;
+	public $Answers;
 }
 ?>

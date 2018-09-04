@@ -1,7 +1,7 @@
 <?php
 class UserModel {
 	public $Id;
-	public $Name;
+	public $FullName;
 	public $Identification;
 	public $Email;
 	public $Phone;
@@ -9,6 +9,6 @@ class UserModel {
 	public $Username;
 	public $Password;
 	public $Status;
-	public $IdRol;
+	public $Rol;
 }
 ?>

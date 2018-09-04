@@ -2,8 +2,9 @@
 class QuizzeModel {
 	public $Id;
 	public $Name;
+	public $AttemptNumber;
 	public $Status;
-	public $IdProfessor;
-	public $IdCourse;
+	public $User;
+	//public $Course;
 }
 ?>
