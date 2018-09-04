@@ -4,6 +4,6 @@ class AnswerModel {
 	public $Description;
 	public $Correct;
 	public $Status;
-	public $IdQuestion;
+	public $Question;
 }
 ?>
