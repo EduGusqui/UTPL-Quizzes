@@ -1,4 +1,6 @@
 <?php
+require_once("WebApi/service/AuthService.php");
+
 class RestService {
 	public $_allow = array();
 	public $_content_type = "application/json";
@@ -19,6 +21,12 @@ class RestService {
 		$this->set_headers();
 		echo $data;
 		exit;
+	}
+
+	public function get_error_message($code) {
+		$this->_code = $code;
+		$errorMessage = $this->get_status_message();
+		return $errorMessage;
 	}
 
 	private function get_status_message() {
@@ -111,6 +119,24 @@ class RestService {
 	private function set_headers() {
 		header("HTTP/1.1 ".$this->_code." ".$this->get_status_message());
 		header("Content-Type:".$this->_content_type);
+	}
+
+	public function verifyToken() {
+		try {
+			$headers = apache_request_headers();
+			$authorization = isset($headers['Authorization']) ? $headers['Authorization'] : $headers['authorization'];
+
+			if (!is_null($authorization)) {
+				AuthService::Check($authorization);
+			} else {
+				$error = array('Message'=> "Authorization has been denied for this request");
+				$this->response(json_encode($error),401);
+			}
+			
+		} catch (Exception $e) {
+			$error = array('Message'=> "Authorization has been denied for this request. " . $e->getMessage());
+			$this->response(json_encode($error),500);
+		}
 	}
 }	
 ?>
