@@ -19,7 +19,7 @@ class AnswerController extends RestService {
 			if (!empty($answers)) {
 				$this->response($this->json($answers), 200);
 			}else {
-				$message = array('error'=>$this->get_error_message(404));
+				$message = array('message'=>$this->get_error_message(404));
 				$this->response($this->json($message), 404);
 			}
 		}catch (Exception $e) {
@@ -36,7 +36,7 @@ class AnswerController extends RestService {
 			if (!empty($answer)) {
 				$this->response($this->json($answer), 200);
 			}else {
-				$message = array('error'=>$this->get_error_message(404));
+				$message = array('message'=>$this->get_error_message(404));
 				$this->response($this->json($message), 404);
 			}
 		}catch (Exception $e) {
@@ -53,7 +53,7 @@ class AnswerController extends RestService {
 			if (!empty($answers)) {
 				$this->response($this->json($answers), 200);
 			} else {
-				$message = array('error'=>$this->get_error_message(404));
+				$message = array('message'=>$this->get_error_message(404));
 				$this->response($this->json($message), 404);
 			}
 		} catch (Exception $e) {
