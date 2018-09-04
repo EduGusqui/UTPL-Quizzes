@@ -99,7 +99,7 @@ class QuestionController extends RestService {
 			$this->verifyToken();
 			$postBody = file_get_contents("php://input");
 			$this->service->update($postBody);
-			$message = array('status' => "Success", "msg" => "Successfully create.");
+			$message = array('status' => "Success", "msg" => "Successfully update.");
 			$this->response($this->json($message),200);
 		} catch (Exception $e) {
 			$this->response('',500);
@@ -110,7 +110,7 @@ class QuestionController extends RestService {
 		try {
 			$this->verifyToken();
 			$this->service->delete($id);
-			$message = array('status' => "Success", "msg" => "Successfully create.");
+			$message = array('status' => "Success", "msg" => "Successfully delete.");
 			$this->response($this->json($message),200);
 		} catch (Exception $e) {
 			$message = array('error'=>$this->get_error_message(500));
