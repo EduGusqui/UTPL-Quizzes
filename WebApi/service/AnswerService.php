@@ -1,41 +1,117 @@
 <?php
 require_once("WebApi/model/Database.php");
 require_once("WebApi/service/IBaseService.php");
+require_once("WebApi/model/AnswerModel.php");
+require_once("WebApi/model/QuestionModel.php");
 
 class AnswerService implements IBaseService {
 	
 	public static function getAll() {
 		try {
 			$db = Database::getConnection();
-			$sql = "select * from respuesta where estado = ?";
-			return $db->executeAll($sql,array("ACT"));
+			$sql = "select r.id, r.descripcion, r.estado, r.correcta, p.id as idPregunta,
+					p.descripcion as descripcionPregunta 
+					from respuesta r
+					left join pregunta p on p.id = r.idPregunta
+					where r.estado = ?";
+
+			$data = $db->executeAll($sql,array("ACT"));
+			for($i = 0; $i < count($data); $i++) {
+				$answer = new AnswerModel();
+				$answer->Id = $data[$i]->id;
+				$answer->Description = $data[$i]->descripcion;
+				$answer->Correct = $data[$i]->correcta;
+				$answer->Status = $data[$i]->estado;
+				$question = new QuestionModel();
+				$question->Id = $data[$i]->idPregunta;
+				$question->Description = $data[$i]->descripcionPregunta;
+				$answer->Question = $question;
+				$answers[$i] = $answer;
+			}
+
+			if (!empty($answers)) 
+				return $answers;
+			else
+				return null;
 		}
 		catch (Exeption $e) {
-			print "Error!: " . $e->getMessage();
+			throw new Exception($e->getMessage());
 		}
 	}
 
 	public static function getById($id) {
 		try {
 			$db = Database::getConnection();
-			$sql = "select * from respuesta where id = ? and estado = ?";
-			return $db->execute($sql,array($id, "ACT"));
+			$sql = "select r.id, r.descripcion, r.estado, r.correcta, p.id as idPregunta,
+					p.descripcion as descripcionPregunta
+					from respuesta r
+					where r.id = ? and r.estado = ?";
+			$data = $db->execute($sql,array($id, "ACT"));
+			if (!empty($data)) {
+				$answer = new AnswerModel();
+				$answer->Id = $data->id;
+				$answer->Description = $data->descripcion;
+				$answer->Correct = $data->correcta;
+				$answer->Status = $data->estado;
+				$question = new QuestionModel();
+				$question->Id = $data->idPregunta;
+				$question->Description = $data->descripcionPregunta;
+				$answer->Question = $question;
+
+				return $answer;
+			} else {
+				return null;
+			}
 		}
 		catch (Exeption $e) {
-			print "Error!: " . $e->getMessage();
+			throw new Exception($e->getMessage());
+		}
+	}
+
+	public static function getByQuestionId($idQuestion) {
+		try {
+			$db = Database::getConnection();
+			$sql = "select r.id, r.descripcion, r.estado, r.correcta, p.id as idPregunta,
+					p.descripcion as descripcionPregunta
+					from respuesta r
+					left join pregunta p on p.id = r.idPregunta
+					where r.estado = ?
+					and r.idPregunta = ?";
+			$data = $db->executeAll($sql,array("ACT",$idQuestion));
+			for($i = 0; $i < count($data); $i++) {
+				$answer = new AnswerModel();
+				$answer->Id = $data[$i]->id;
+				$answer->Description = $data[$i]->descripcion;
+				$answer->Correct = $data[$i]->correcta;
+				$answer->Status = $data[$i]->estado;
+				$question = new QuestionModel();
+				$question->Id = $data[$i]->idPregunta;
+				$question->Description = $data[$i]->descripcionPregunta;
+				$answer->Question = $question;
+				$answers[$i] = $answer;
+			}
+
+			if (!empty($answers)) {
+				return $answers;
+			} else {
+				return null;
+			}
+		}
+		catch (Exeption $e) {
+			throw new Exception($e->getMessage());
 		}
 	}
 
 	public static function create($data) {
 		try {
-			$answer = json_decode($data);
 			$db = Database::getConnection();
-			$sql = "insert into respuesta (descripcion,correcta,estado,idPregunta) values (?,?,?,?)";
-			$db->execute($sql, array($answer->Description,$answer->Correct,"ACT",$answer->IdQuestion));
-			return true;
+			$answers = json_decode($data);
+			foreach ($answers as $answer) {
+				$sql = "insert into respuesta (descripcion,correcta,estado,idPregunta) values (?,?,?,?)";
+				$db->execute($sql, array($answer->Description,$answer->Correct,"ACT",$answer->Question->Id));
+			}
 		} catch (Exeption $e) {
-			print "Error!: " . $e->getMessage();
-			return false;
+			throw new Exception($e->getMessage());
 		}
 	}
 
@@ -45,10 +121,8 @@ class AnswerService implements IBaseService {
 			$db = Database::getConnection();
 			$sql = "update respuesta set descripcion=?,correcta=?,idPregunta=? where id=?";
 			$db->execute($sql, array($answer->Description,$answer->Correct,$answer->IdQuestion,$answer->Id));
-			return true;
 		} catch (Exception $e) {
-			print "Error!: " . $e->getMessage();
-			return false;
+			throw new Exception($e->getMessage());
 		}
 	}
 
@@ -57,10 +131,8 @@ class AnswerService implements IBaseService {
 			$db = Database::getConnection();
 			$sql = "update pregunta set estado=? where id=?";
 			$db->execute($sql, array("INA",$id));
-			return true;
 		} catch (Exeption $e) {
-			print "Error!: " . $e->getMessage();
-			return false;
+			throw new Exception($e->getMessage());
 		}
 	}
 } 
