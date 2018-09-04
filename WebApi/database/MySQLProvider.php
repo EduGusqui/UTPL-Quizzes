@@ -4,6 +4,7 @@ class MySqlProvider extends DatabaseProvider
 {
 	public function connect($host, $user, $pass, $dbname){
 		$this->resource = new mysqli($host, $user, $pass, $dbname);
+		mysqli_set_charset($this->resource,"utf8");
 		return  $this->resource;
 	}
 
