@@ -18,7 +18,7 @@ class CourseController extends RestService {
 			if (!empty($courses)) {
 				$this->response($this->json($courses), 200);
 			}else {
-				$message = array('error'=>$this->get_error_message(404));
+				$message = array('message'=>$this->get_error_message(404));
 				$this->response($this->json($message), 404);
 			}
 		}catch (Exception $e) {
@@ -35,7 +35,7 @@ class CourseController extends RestService {
 			if (!empty($course)) {
 				$this->response($this->json($course), 200);
 			}else {
-				$message = array('error'=>$this->get_error_message(404));
+				$message = array('message'=>$this->get_error_message(404));
 				$this->response($this->json($message), 404);
 			}
 		}catch (Exception $e) {
@@ -52,7 +52,7 @@ class CourseController extends RestService {
 			if (!empty($courses)) {
 				$this->response($this->json($courses), 200);
 			} else {
-				$message = array('error'=>$this->get_error_message(404));
+				$message = array('message'=>$this->get_error_message(404));
 				$this->response($this->json($message), 404);
 			}
 		} catch (Exception $e) {
