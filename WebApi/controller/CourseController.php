@@ -1,8 +1,6 @@
 <?php
-
 require_once("WebApi/service/RestService.php");
 require_once("WebApi/service/CourseService.php");
-require_once("WebApi/model/CourseModel.php");
 
 class CourseController extends RestService {
 	private $service;
@@ -14,95 +12,91 @@ class CourseController extends RestService {
 
 	public function getAll() {
 		try {
+			$this->verifyToken();
 			$courses = $this->service->getAll();
-			$listCourses;
-			for($i = 0; $i < count($courses); $i++) {
-				$course = new CourseModel();
-				$course->Id = $courses[$i]->id;
-				$course->Name = $courses[$i]->nombre;
-				$course->Status = $courses[$i]->estado;
-				$course->IdProfessor = $courses[$i]->idProfesor;
-				$listCourses[$i] = $course;
-			}
 			
-			if (!empty($listCourses)) {
-				$this->response($this->json($listCourses), 200);
+			if (!empty($courses)) {
+				$this->response($this->json($courses), 200);
 			}else {
-				$this->response('', 404);
+				$message = array('error'=>$this->get_error_message(404));
+				$this->response($this->json($message), 404);
 			}
 		}catch (Exception $e) {
-			$this->response('',500);
+			$message = array('error'=>$this->get_error_message(500));
+			$this->response($message,500);
 		}
 		
 	}
 
 	public function getById($id) {
 		try {
-			$data = $this->service->getById($id);
-			
-			$course = new CourseModel();
-			$course->Id = $data->id;
-			$course->Name = $data->nombre;
-			$course->Status = $data->estado;
-			$course->IdProfessor = $data->idProfesor;
-			
-			if ($course->Id > 0) {
+			$this->verifyToken();
+			$course = $this->service->getById($id);
+			if (!empty($course)) {
 				$this->response($this->json($course), 200);
 			}else {
-				$this->response('', 404);
+				$message = array('error'=>$this->get_error_message(404));
+				$this->response($this->json($message), 404);
 			}
 		}catch (Exception $e) {
-			$this->response('',500);
+			$message = array('error'=>$this->get_error_message(500));
+			$this->response($message,500);
 		}
 		
 	}
 
+	public function getByProfessorId($idProfessor) {
+		try {
+			$this->verifyToken();
+			$courses = $this->service->getByProfessorId($idProfessor);
+			if (!empty($courses)) {
+				$this->response($this->json($courses), 200);
+			} else {
+				$message = array('error'=>$this->get_error_message(404));
+				$this->response($this->json($message), 404);
+			}
+		} catch (Exception $e) {
+			$message = array('error'=>$this->get_error_message(500));
+			$this->response($message,500);
+		}
+	}
+
 	public function create() {
 		try {
+			$this->verifyToken();
 			$postBody = file_get_contents("php://input");
-			$result = $this->service->create($postBody);
-			if ($result) {
-				$success = array('status' => "Success", "msg" => "Successfully create.");
-				$this->response($this->json($success),200);
-			}else {
-				$this->response('',404);
-			}
-			
+			$this->service->create($postBody);
+			$message = array('status' => "Success", "msg" => "Successfully create.");
+			$this->response($this->json($message),200);
 		}catch (Exception $e) {
-			$this->response('',500);
+			$message = array('error'=>$this->get_error_message(500));
+			$this->response($message,500);
 		}
 	}
 
 	public function update() {
 		try {
+			$this->verifyToken();
 			$postBody = file_get_contents("php://input");
-			$result = $this->service->update($postBody);
-
-			if ($result) {
-				$success = array('status' => "Success", "msg" => "Successfully update.");
-				$this->response($this->json($success),200);
-			}else {
-				$this->response('',404);
-			}
-			
+			$this->service->update($postBody);
+			$message = array('status' => "Success", "msg" => "Successfully create.");
+			$this->response($this->json($message),200);
 		}catch (Exception $e) {
-			$this->response('',500);
+			$message = array('error'=>$this->get_error_message(500));
+			$this->response($message,500);
 		}
 	}
 
 	public function delete($id) {
 		try {
-			$result = $this->service->delete($id);
-			if ($result) {
-				$success = array('status' => "Success", "msg" => "Successfully delete.");
-				$this->response($this->json($success),200);
-			}else {
-				$this->response('',404);
-			}
+			$this->verifyToken();
+			$this->service->delete($id);
+			$message = array('status' => "Success", "msg" => "Successfully create.");
+			$this->response($this->json($message),200);
 		}catch (Exception $e) {
-			$this->response('',500);
+			$message = array('error'=>$this->get_error_message(500));
+			$this->response($message,500);
 		}
-		
 	}
 
 	private function json($data){

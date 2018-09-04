@@ -3,6 +3,6 @@ class CourseModel {
 	public $Id;
 	public $Name;
 	public $Status;
-	public $IdProfessor;
+	public $Teacher;
 }
 ?>
