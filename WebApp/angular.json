@@ -24,10 +24,15 @@
             ],
             "styles": [
               "src/styles.css",
-              "./vendor/pace/css/theme-loading-bar.css"
+              "./node_modules/font-awesome/css/font-awesome.css",
+              "./node_modules/datatables.net-dt/css/jquery.dataTables.css",
+              "./node_modules/datatables.net-responsive-dt/css/responsive.dataTables.css"
             ],
             "scripts": [
-              "./vendor/pace/js/pace.min.js"
+              "./node_modules/jquery/dist/jquery.js",
+              "./node_modules/metismenu/dist/metisMenu.js",
+              "./node_modules/datatables.net/js/jquery.dataTables.js",
+              "./node_modules/datatables.net-responsive/js/dataTables.responsive.js"
             ]
           },
           "configurations": {
