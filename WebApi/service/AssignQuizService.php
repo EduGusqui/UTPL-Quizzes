@@ -11,13 +11,18 @@ class AssignQuizService implements IBaseService {
 		try {
 			$db = Database::getConnection();
 			$sql = "select a.id, u.id as idUsuario, u.nombre as nombreUsuario, c.id as idCuestionario, 
-							c.nombre as nombreCuestionario, a.estado, p.id as idProfesor, p.nombre as nombreProfesor
-							from asignar_cuestionario a
-							left join usuario u on u.id = a.idEstudiante
-							left join cuestionario c on c.id = a.idCuestionario
-							left join usuario p on p.id = c.idProfesor
-							where a.estado = ?
-							order by c.nombre, u.nombre ";
+				c.nombre as nombreCuestionario, a.estado, p.id as idProfesor, p.nombre as nombreProfesor,
+				c.numero_intento,
+				(select count(numero_intento) from rendir_cuestionario where 
+					idAsignarCuestionario = a.id) as numero_intento_realizado,
+				coalesce((select calificacion from rendir_cuestionario where idAsignarCuestionario = a.id order by id 
+					desc limit 1),0) as calificacion
+				from asignar_cuestionario a
+				left join usuario u on u.id = a.idEstudiante
+				left join cuestionario c on c.id = a.idCuestionario
+				left join usuario p on p.id = c.idProfesor
+				where a.estado = ?
+				order by c.nombre, u.nombre ";
 			$data = $db->executeAll($sql, array("ACT"));
 			for ($i = 0; $i < count($data); $i++) {
 				$assign = new AssignQuizModel();
@@ -33,8 +38,11 @@ class AssignQuizService implements IBaseService {
 				$quiz = new QuizzeModel();
 				$quiz->Id = $data[$i]->idCuestionario;
 				$quiz->Name = $data[$i]->nombreCuestionario;
+				$quiz->AttemptNumber = $data[$i]->numero_intento;
 				$assign->Quiz = $quiz;
 				$assign->Status = $data[$i]->estado;
+				$assign->AttemptNumber = $data[$i]->numero_intento_realizado;
+				$assign->Score = $data[$i]->calificacion;
 				$assignations[$i] = $assign;
 			}
 
@@ -55,15 +63,19 @@ class AssignQuizService implements IBaseService {
 		try {
 			$db = Database::getConnection();
 			$sql = "select a.id, u.id as idUsuario, u.nombre as nombreUsuario, c.id as idCuestionario, 
-							c.nombre as nombreCuestionario, a.estado, p.id as idProfesor, p.nombre as nombreProfesor,
-							c.numero_intento
-							from asignar_cuestionario a
-							left join usuario u on u.id = a.idEstudiante
-							left join cuestionario c on c.id = a.idCuestionario
-							left join usuario p on p.id = c.idProfesor
-							where a.estado = ?
-							and u.id = ?
-							order by c.nombre, u.nombre ";
+					c.nombre as nombreCuestionario, a.estado, p.id as idProfesor, p.nombre as nombreProfesor,
+					c.numero_intento,
+					(select count(numero_intento) from rendir_cuestionario where 
+						idAsignarCuestionario = a.id) as numero_intento_realizado,
+					coalesce((select calificacion from rendir_cuestionario where idAsignarCuestionario = a.id order by id 
+						desc limit 1),0) as calificacion
+					from asignar_cuestionario a
+					left join usuario u on u.id = a.idEstudiante
+					left join cuestionario c on c.id = a.idCuestionario
+					left join usuario p on p.id = c.idProfesor
+					where a.estado = ?
+					and u.id = ?
+					order by c.nombre, u.nombre ";
 			$data = $db->executeAll($sql, array("ACT",$idUser));
 			for ($i = 0; $i < count($data); $i++) {
 				$assign = new AssignQuizModel();
@@ -82,6 +94,8 @@ class AssignQuizService implements IBaseService {
 				$quiz->AttemptNumber = $data[$i]->numero_intento;
 				$assign->Quiz = $quiz;
 				$assign->Status = $data[$i]->estado;
+				$assign->AttemptNumber = $data[$i]->numero_intento_realizado;
+				$assign->Score = $data[$i]->calificacion;
 				$assignations[$i] = $assign;
 			}
 
