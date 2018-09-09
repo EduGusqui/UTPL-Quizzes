@@ -1,29 +1,39 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { LoginComponent } from './login/login.component';
+import { ActivateRoutes } from './utils/activate.routes';
+import { MainViewComponent } from './main/main.component';
 import { NavigationComponent } from './layout/navigation.component';
-import { UserListComponent } from './components/user/list.component';
-import { UserComponent } from './components/user/form.component';
 
 const routes: Routes = [
-	{ path: '', redirectTo: 'users', pathMatch: 'full'},
+	// Main redirect
+	{ path: '', redirectTo: 'mainView', pathMatch: 'full' },
 
-	{ path: '', component: NavigationComponent, 
-		children: [
-			{ path: 'users', component: UserListComponent },
-			{ path: 'users/create', component: UserComponent }
-		]
+	// App views
+  {
+    path: '', component: NavigationComponent, 
+    children: [
+      { path: 'mainView', component: MainViewComponent, canActivate: [ActivateRoutes] }
+    ]
 	},
-	
-	{ path: '', component: NavigationComponent, 
+
+	{ path: '', 
 		children: [
-			{ path: 'create', component: UserComponent }
+			{ path: 'login', component: LoginComponent }
 		]
 	}
+	
+	
 ];
 
-@NgModule({
+/*@NgModule({
 	imports: [ RouterModule.forRoot(routes) ],
 	exports: [ RouterModule ]
 })
 
-export class AppRoutingModule {}
+export class AppRoutingModule {}*/
+export const appRoutingProviders: any[] = [
+
+];
+
+export const routing: ModuleWithProviders = RouterModule.forRoot(routes, {useHash: true});
