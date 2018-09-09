@@ -1,0 +1,42 @@
+<div class="wrapper wrapper-content">
+	<div class="ibox-content">
+		<h3><b>Listado de Usuarios</b></h3>
+		<br>
+		<a routerLink="/users/new" class="btn btn-w-m btn-success">Nuevo</a>
+		<br>
+		<br>
+		<div>
+			<table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover" width="100%">
+				<thead>
+					<tr>
+						<th>Nombres</th>
+						<th>Cédula</th>
+						<th>Email</th>
+						<th>Teléfono</th>
+						<th>Ciudad de residencia</th>
+						<th>Nombre de usuario</th>
+						<th>Rol</th>
+						<th>Estado</th>
+						<th class="no-sort">Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let user of users">
+						<td>{{user.FullName}}</td>
+						<td>{{user.Identification}}</td>
+						<td>{{user.Email}}</td>
+						<td>{{user.Phone}}</td>
+						<td>{{user.ResidenceCity}}</td>
+						<td>{{user.Username}}</td>
+						<td>{{user.Rol.Name}}</td>
+						<td>{{user.Status}}</td>
+						<td>
+							<a class="btn btn-success m-b-w" title="Editar" routerLink="/users/edit/{{user.Id}}"><i class="fa fa-pencil-square-o"></i></a>
+							<a class="btn btn-success m-b-w" title="Eliminar" (click)="delete(user.Id)"><i class="fa fa-trash-o"></i></a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
