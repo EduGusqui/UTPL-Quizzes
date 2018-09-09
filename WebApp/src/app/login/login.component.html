@@ -1,0 +1,38 @@
+<div class="background-login">
+	<div class="middle-box text-center loginscreen">
+		<div class="login-padding"> 
+			<br/>
+			<div class="m-b">
+				<img width="300px" src="../assets/images/utpl_logo.png"/>
+			</div>
+			<br/>
+			<h3>Sistema de cuestionarios</h3>
+			<p>Ingresar al Sistema</p>
+			<form class="m-t" name="loginForm" #loginForm="ngForm" (ngSubmit)="loginForm.valid && login()" role="form"  novalidate>
+				<div class="row flex-row">
+					<div class="col-lg-12">
+						<input type="text" class="login-text-box" name="userName" placeholder="Usuario" [(ngModel)]="user.Username" #userName="ngModel" 
+							[ngClass]="{ 'is-invalid': loginForm.submitted && userName.invalid }" required>
+						<div *ngIf="loginForm.submitted && userName.invalid" class="fields-errors">
+							<div *ngIf="userName.errors.required">Campo requerido</div>
+						</div>
+					</div>
+				</div>
+				<div class="row flex-row">
+					<div class="col-lg-12">
+						<input type="password" class="login-text-box" id="password" name="password" placeholder="Clave" [(ngModel)]="user.Password" #password="ngModel" 
+							[ngClass]="{ 'is-invalid': loginForm.submitted && password.invalid }"required>
+						<div *ngIf="loginForm.submitted && password.invalid" class="fields-errors">
+							<div *ngIf="password.errors.required">Campo requerido</div>
+						</div>
+					</div>
+				</div>
+				<div class="row flex-row btn-margin">
+					<button type="submit" class="btn btn-success btn-w-m">Ingresar</button>
+					<button type="button" class="btn btn-primary btn-w-m" (click)="register()">Registrarse</button>
+				</div>		
+			</form>
+			<div *ngIf="error" class="fields-errors">{{error}}</div>
+		</div>
+	</div> 
+</div>
