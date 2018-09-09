@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
 @Component({
-  templateUrl: 'navigation.template.html'
+  templateUrl: 'navigation.component.html'
 })
 export class NavigationComponent { }
