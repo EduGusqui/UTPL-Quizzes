@@ -1,0 +1,33 @@
+<div class="wrapper wrapper-content">
+	<div class="ibox-content">
+		<h3><b>Cuestionarios por rendir</b></h3>
+		<br>
+		<br>
+		<div>
+			<table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover" width="100%">
+				<thead>
+					<tr>
+						<th>Docente</th>
+						<th>Cuestionario</th>
+						<th>Asignado a</th>
+						<th>Número intento</th>
+						<th>Calificación</th>
+						<th class="no-sort">Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let assign of assignations">
+						<td>{{assign.Teacher.FullName}}</td>
+						<td>{{assign.Quiz.Name}}</td>
+						<td>{{assign.Student.FullName}}</td>
+						<td>0</td>
+						<td>0.00</td>
+						<td>
+							<a class="btn btn-success m-b-w" title="Rendir cuestionario" (click)="takeQuiz(assign.Id)"><i class="fa fa-list-ul"></i></a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
