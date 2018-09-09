@@ -4,17 +4,42 @@
 		<img src="assets/images/menu-icon.png" id="icon-menu">
 	</label>
 	<div class="sidenav">
-		<ul class="nav" id="side-menu">
+		<ul class="nav metismenu" id="side-menu">
 			<li class="nav-header">
 				<span class="logo-utpl">
 					<img alt="image" class="img-circle" src="assets/images/logo_utpl.png" />
 				</span>
 			</li>
-			<li routerLinkActive="active"><a routerLink="/users">Gestión usuarios</a></li>
-			<li routerLinkActive="active"><a routerLink="/create">Actualizar roles</a></li>
-			<li routerLinkActive="active"><a routerLink="#">Gestión cuestionarios</a></li>
-			<li routerLinkActive="active"><a routerLink="#">Configuración</a></li>
-			<li routerLinkActive="active"><a routerLink="#">Salir</a></li>
+			
+			<li *ngIf="sessionService.isInRol(1) || sessionService.isInRol(3)" [ngClass]="{active: activeRoute('adm')}">
+				<a href="#">
+					<i class="fa fa-group"></i> 
+					<span class="m-l">Gestión Usuarios</span>
+					<span class="fa fa-angle-left m-l-m-u"></span>
+				</a>
+				<ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('adm')}">
+					<li *ngIf="sessionService.isInRol(1)" routerLinkActive="active"><a routerLink="/users">Usuarios</a></li>
+					<li *ngIf="sessionService.isInRol(1) || sessionService.isInRol(3)" routerLinkActive="active"><a routerLink="/takesQuizzes">Rendir cuestionarios</a></li>
+					<li *ngIf="sessionService.isInRol(1) || sessionService.isInRol(3)" routerLinkActive="active"><a routerLink="/users">Ver cuestionarios</a></li>
+				</ul>
+			</li>
+
+			<li *ngIf="sessionService.isInRol(1)" routerLinkActive="active"><a routerLink="/roles"><i class="fa fa-lock"></i><span class="m-l">Roles</span></a></li>
+			
+			<li *ngIf="sessionService.isInRol(1) || sessionService.isInRol(2)" [ngClass]="{active: activeRoute('teacher')}">
+				<a href="#">
+					<i class="fa fa-file-text-o"></i> 
+					<span class="m-l">Gestión Cuestionarios</span>
+					<span class="fa fa-angle-left m-l-m-c"></span>
+				</a>
+				<ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('teacher')}">
+					<li *ngIf="sessionService.isInRol(1) || sessionService.isInRol(2)" routerLinkActive="active"><a routerLink="/quizzes">Cuestionarios</a></li>
+					<li *ngIf="sessionService.isInRol(1) || sessionService.isInRol(2)" routerLinkActive="active"><a routerLink="/assignations">Asignar Cuestionarios</a></li>
+					<li *ngIf="sessionService.isInRol(1) || sessionService.isInRol(2)" routerLinkActive="active"><a routerLink="/quizzes">Cuestionarios rendidos</a></li>
+				</ul>
+			</li>
+			
+			<li *ngIf="sessionService.isInRol(1)" routerLinkActive="active"><a routerLink="/configurations"><i class="fa fa-gear"></i><span class="m-l">Configuración</span></a></li>
 		</ul>
 	</div>
 </nav>
