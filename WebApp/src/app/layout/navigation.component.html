@@ -1,0 +1,17 @@
+<div id="wrapper">
+	<app-menu></app-menu>
+	<div id="page-wrapper" class="gray-bg">
+
+		<!-- Top navigation -->
+		<app-header></app-header>
+		<!--<topnavbar *ngIf="!(activeRoute('login') || activeRoute('not-found'))"></topnavbar>-->
+
+		<!-- Main view/routes wrapper-->
+		<router-outlet></router-outlet>
+
+		<!-- Footer -->
+		<footer></footer>
+
+	</div>
+
+</div>
