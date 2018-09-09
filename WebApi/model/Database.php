@@ -54,8 +54,8 @@ class Database
 			}
 			elseif(is_double($params[$i]))
 				$params[$i] = str_replace(',', '.', $params[$i]);
-			elseif(is_numeric($params[$i]))
-				$params[$i] = $this->provider->escape($params[$i]);
+			/*elseif(is_numeric($params[$i]))
+				$params[$i] = $this->provider->escape($params[$i]);*/
 			elseif(is_null($params[$i]))
 				$params[$i] = "NULL";
 			else
@@ -72,7 +72,7 @@ class Database
 		$query = $this->prepare($q, $params);
 		$result = $this->provider->query($query);
 		if($this->provider->getErrorNo()){
-			/*Controlar errores*/
+			throw new Exception($this->provider->getError());
 		}
 		return $result;
 	}
