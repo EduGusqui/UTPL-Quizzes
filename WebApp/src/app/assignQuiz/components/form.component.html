@@ -1,0 +1,46 @@
+<div class="wrapper wrapper-content">
+	<div class="ibox-content">
+		<h3><b>Asignar cuestionario</b></h3>
+		<br>
+		<form name="form" #form="ngForm" (ngSubmit)="form.form.valid && save()" no validate>
+			<div *ngIf="show" class="row flex-row">
+				<label class="control-label col-lg-1">Profesor:</label>
+				<div class="col-lg-4 col-xs-12">
+					<select class="form-control margin-bottom-none" [(ngModel)]="assignQuiz.Teacher.Id" name="teacher" #teacher="ngModel" (change)="loadQuizzes()" required>
+						<option [ngValue]="null">Seleccione</option>
+						<option *ngFor="let i of teachers" [ngValue]="i.Id">{{i.FullName}}</option>
+					</select>
+					<div *ngIf="form.submitted && teacher.invalid" class="error-fields">
+							<div *ngIf="teacher.errors.required">Campo requerido</div>
+					</div>
+				</div>
+			</div>
+			<div class="row flex-row">
+				<label class="control-label col-lg-1">Cuestionarios:</label>
+				<div class="col-lg-4 col-xs-12">
+					<select class="form-control margin-bottom-none" [(ngModel)]="assignQuiz.Quiz.Id" name="quizze" #quizze="ngModel" required>
+						<option [ngValue]="null">Seleccione</option>
+						<option *ngFor="let i of quizzes" [ngValue]="i.Id">{{i.Name}}</option>
+					</select>
+					<div *ngIf="form.submitted && quizze.invalid" class="error-fields">
+						<div *ngIf="quizze.errors.required">Campo requerido</div>
+					</div>
+				</div>
+			</div>
+			<div class="row flex-row">
+				<label class="control-label col-lg-1">Estudiantes:</label>
+				<div class="col-lg-4 col-xs-12">
+					<select multiple class="form-control margin-bottom-none" name="student" #student (change)="selectStudents($event.target)">
+						<option *ngFor="let i of students" [ngValue]="i.Id">{{i.FullName}}</option>
+					</select>
+				</div>
+			</div>
+			<div class="row flex-row">
+				<div class="col-sm-offset-5 col-lg-4 col-xs-12">
+					<button class="btn btn-w-m btn-success" type="submit">Asignar</button>
+					<a routerLink="/assignations" class="btn btn-w-m btn-danger">Cancelar</a>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

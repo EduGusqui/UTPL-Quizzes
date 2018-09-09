@@ -1,0 +1,34 @@
+<div class="wrapper wrapper-content">
+	<div class="ibox-content">
+		<h3><b>Listado de Cuestionarios Asignados</b></h3>
+		<br>
+		<a routerLink="/assignations/new" class="btn btn-w-m btn-success">Asignar</a>
+		<br>
+		<br>
+		<div>
+			<table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover" width="100%">
+				<thead>
+					<tr>
+						<th *ngIf="show">Docente</th>
+						<th>Cuestionario</th>
+						<th>Estudiante</th>
+						<th>Estado</th>
+						<th class="no-sort">Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let assign of assignations">
+						<td *ngIf="show">{{assign.Teacher.FullName}}</td>
+						<td>{{assign.Quiz.Name}}</td>
+						<td>{{assign.Student.FullName}}</td>
+						<td>{{assign.Status}}</td>
+						<td>
+							<!--<a class="btn btn-success m-b-w" title="Editar" routerLink="/assignations/edit/{{assign.Id}}"><i class="fa fa-pencil-square-o"></i></a>-->
+							<a class="btn btn-success m-b-w" title="Eliminar" (click)="delete(assign.Id)"><i class="fa fa-trash-o"></i></a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
