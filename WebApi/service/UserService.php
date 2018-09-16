@@ -155,5 +155,35 @@ class UserService implements IBaseService {
 			throw new Exception($e->getMessage());
 		}
 	}
+
+	public static function getUserByUserName($userName) {
+		try {
+			$db = Database::getConnection();
+			$sql = "select u.id, u.nombre, u.cedula, u.email, u.telefono, u.ciudad_residencia, u.nombre_usuario, 
+					u.contrasenia, u.estado, u.idRol
+					from usuario u
+					where u.estado = ?
+					and u.nombre_usuario = ?";
+
+			$data = $db->execute($sql,array("ACT", $userName));
+			if (!empty($data)) {
+				$user = new UserModel();
+				$user->Id = $data->id;
+				$user->FullName = $data->nombre;
+				$user->Identification = $data->cedula;
+				$user->Email = $data->email;
+				$user->Phone = $data->telefono;
+				$user->ResidenceCity = $data->ciudad_residencia;
+				$user->Username = $data->nombre_usuario;
+				$user->Status = $data->estado;
+
+				return $user;
+			} else {
+				return null;
+			}
+		} catch (Exeption $e) {
+			throw new Exception($e->getMessage());
+		}
+	}
 } 
 ?>
