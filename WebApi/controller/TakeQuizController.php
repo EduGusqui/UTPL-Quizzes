@@ -14,13 +14,64 @@ class TakeQuizController extends RestService {
 	public function getAll() {
 		try {
 			$this->verifyToken();
-			$answers = $this->service->getAll();
+			$takeQuizzes = $this->service->getAll();
 			
-			if (!empty($answers)) {
-				$this->response($this->json($answers), 200);
+			if (!empty($takeQuizzes)) {
+				$this->response($this->json($takeQuizzes), 200);
 			}else {
 				$message = array('status'=>'404','message'=>$this->get_error_message(404));
-				$this->response($this->json($message), 200);
+				$this->response($this->json($message), 404);
+			}
+		}catch (Exception $e) {
+			$message = array('error'=>$this->get_error_message(500));
+			$this->response($this->json($message),500);
+		}
+	}
+
+	public function getById($id) {
+		try {
+			$this->verifyToken();
+			$takeQuiz = $this->service->getById($id);
+			
+			if (!empty($takeQuiz)) {
+				$this->response($this->json($takeQuiz), 200);
+			}else {
+				$message = array('status'=>'404','message'=>$this->get_error_message(404));
+				$this->response($this->json($message), 404);
+			}
+		}catch (Exception $e) {
+			$message = array('error'=>$this->get_error_message(500));
+			$this->response($this->json($message),500);
+		}
+	}
+
+	public function getByStudent($idStudent) {
+		try {
+			$this->verifyToken();
+			$takeQuizzes = $this->service->getTakeByStudent($idStudent);
+			
+			if (!empty($takeQuizzes)) {
+				$this->response($this->json($takeQuizzes), 200);
+			}else {
+				$message = array('status'=>'404','message'=>$this->get_error_message(404));
+				$this->response($this->json($message), 404);
+			}
+		}catch (Exception $e) {
+			$message = array('error'=>$this->get_error_message(500));
+			$this->response($this->json($message),500);
+		}
+	}
+
+	public function getByTakeQuiz($idTakeQuiz) {
+		try {
+			$this->verifyToken();
+			$takeQuizzes = $this->service->getTakeDetailsByTakeId($idTakeQuiz);
+			
+			if (!empty($takeQuizzes)) {
+				$this->response($this->json($takeQuizzes), 200);
+			}else {
+				$message = array('status'=>'404','message'=>$this->get_error_message(404));
+				$this->response($this->json($message), 404);
 			}
 		}catch (Exception $e) {
 			$message = array('error'=>$this->get_error_message(500));

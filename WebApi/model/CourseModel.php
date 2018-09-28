@@ -4,5 +4,6 @@ class CourseModel {
 	public $Name;
 	public $Status;
 	public $Teacher;
+	public $Category;
 }
 ?>

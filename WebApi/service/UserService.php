@@ -95,12 +95,21 @@ class UserService implements IBaseService {
 
 	public static function update($data) {
 		try {
-			$user = json_decode($data);
 			$db = Database::getConnection();
+			$user = json_decode($data);
 			$sql = "update usuario set nombre=?,cedula=?,email=?,telefono=?,ciudad_residencia=?,nombre_usuario=?,idRol=? 
-					where id=?";
-			$db->execute($sql, array($user->FullName,$user->Identification,$user->Email,$user->Phone,$user->ResidenceCity,
-									$user->Username,$user->Rol->Id,$user->Id));
+				where id=?";
+			if (is_object($user)) {
+				$db->execute($sql, array($user->FullName,$user->Identification,$user->Email,
+					$user->Phone,$user->ResidenceCity,$user->Username,$user->Rol->Id,$user->Id));
+			} else {
+				for ($i = 0; $i < count($user); $i++) {
+					$sql = "update usuario set nombre=?,cedula=?,email=?,telefono=?,ciudad_residencia=?,nombre_usuario=?,idRol=? 
+						where id=?";
+					$db->execute($sql, array($user[$i]->FullName,$user[$i]->Identification,$user[$i]->Email,
+						$user[$i]->Phone,$user[$i]->ResidenceCity, $user[$i]->Username,$user[$i]->Rol->Id,$user[$i]->Id));
+				}
+			}
 		} catch (Exeption $e) {
 			throw new Exception($e->getMessage());
 		}

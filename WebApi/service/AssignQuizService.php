@@ -4,6 +4,7 @@ require_once("WebApi/service/IBaseService.php");
 require_once("WebApi/model/AssignQuizModel.php");
 require_once("WebApi/model/UserModel.php");
 require_once("WebApi/model/QuizzeModel.php");
+require_once("WebApi/model/CourseModel.php");
 
 class AssignQuizService implements IBaseService {
 
@@ -88,6 +89,10 @@ class AssignQuizService implements IBaseService {
 				$teacher->Id = $data[$i]->idProfesor;
 				$teacher->FullName = $data[$i]->nombreProfesor;
 				$assign->Teacher = $teacher;
+				$student = new UserModel();
+				$student->Id = $data[$i]->idUsuario;
+				$student->FullName = $data[$i]->nombreUsuario;
+				$assign->Student = $student;
 				$quiz = new QuizzeModel();
 				$quiz->Id = $data[$i]->idCuestionario;
 				$quiz->Name = $data[$i]->nombreCuestionario;
@@ -96,6 +101,52 @@ class AssignQuizService implements IBaseService {
 				$assign->Status = $data[$i]->estado;
 				$assign->AttemptNumber = $data[$i]->numero_intento_realizado;
 				$assign->Score = $data[$i]->calificacion;
+				$assignations[$i] = $assign;
+			}
+
+			if (!empty($assignations))
+				return $assignations;
+			else
+				return null;
+		} catch (Exception $e) {
+			throw new Exception($e->getMessage());
+		}
+	}
+
+	public static function getAssignationsByTeacher($idTeacher) { 
+		try {
+			$db = Database::getConnection();
+			$sql = "select a.id, u.id as idUsuario, u.nombre as profesor, cu.id as idCurso, cu.nombre as nombreCurso, 
+					c.id as idCuestionario, c.nombre as nombreCuestionario, c.numero_intento, e.Id as idEstudiante,
+					e.Nombre as nombreEstudiante
+					from asignar_cuestionario a
+					left join cuestionario c on c.id = a.idCuestionario
+					left join usuario u on u.id = c.idProfesor
+					left join curso cu on cu.id = c.idCurso
+					left join usuario e on e.id = a.idEstudiante
+					where a.estado = ?
+					and c.idProfesor = ?
+					order by u.nombre, cu.nombre, c.nombre";
+			$data = $db->executeAll($sql, array("ACT",$idTeacher));
+			for ($i = 0; $i < count($data); $i++) {
+				$assign = new AssignQuizModel();
+				$assign->Id = $data[$i]->id;
+				$teacher = new UserModel();
+				$teacher->Id = $data[$i]->idUsuario;
+				$teacher->FullName = $data[$i]->profesor;
+				$assign->Teacher = $teacher;
+				$student = new UserModel();
+				$student->Id = $data[$i]->idEstudiante;
+				$student->FullName = $data[$i]->nombreEstudiante;
+				$assign->Student = $student;
+				$quiz = new QuizzeModel();
+				$quiz->Id = $data[$i]->idCuestionario;
+				$quiz->Name = $data[$i]->nombreCuestionario;
+				$quiz->Course = new CourseModel();
+				$quiz->Course->Id = $data[$i]->idCurso;
+				$quiz->Course->Name = $data[$i]->nombreCurso;
+				$assign->Quiz = $quiz;
+				$assign->AttempNumber = $data[$i]->numero_intento;
 				$assignations[$i] = $assign;
 			}
 

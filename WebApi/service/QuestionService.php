@@ -28,7 +28,7 @@ class QuestionService implements IBaseService {
 				$quizze = new QuizzeModel();
 				$quizze->Id = $data[$i]->idCuestionario;
 				$quizze->Name = $data[$i]->nombreCuestionario;
-				$question->Quizze = $quizze;
+				$question->Quiz = $quizze;
 
 				$questionType = new QuestionTypeModel();
 				$questionType->Id = $data[$i]->idTipoPregunta;
@@ -68,7 +68,7 @@ class QuestionService implements IBaseService {
 				$quizze = new QuizzeModel();
 				$quizze->Id = $data->idCuestionario;
 				$quizze->Name = $data->nombreCuestionario;
-				$question->Quizze = $quizze;
+				$question->Quiz = $quizze;
 
 				$questionType = new QuestionTypeModel();
 				$questionType->Id = $data->idTipoPregunta;
@@ -85,7 +85,7 @@ class QuestionService implements IBaseService {
 		}
 	}
 
-	public static function getByQuizzeId($id) {
+	public static function getByQuizId($id) {
 		try {
 			$db = Database::getConnection();
 			$sql = "select p.id, p.descripcion, p.estado, c.id as idCuestionario, c.nombre as nombreCuestionario,
@@ -105,7 +105,7 @@ class QuestionService implements IBaseService {
 				$quizze = new QuizzeModel();
 				$quizze->Id = $data[$i]->idCuestionario;
 				$quizze->Name = $data[$i]->nombreCuestionario;
-				$question->Quizze = $quizze;
+				$question->Quiz = $quizze;
 
 				$questionType = new QuestionTypeModel();
 				$questionType->Id = $data[$i]->idTipoPregunta;
@@ -169,7 +169,7 @@ class QuestionService implements IBaseService {
 			$question = json_decode($data);
 			$db = Database::getConnection();
 			$sql = "insert into pregunta (descripcion,estado,idCuestionario,idTipoPregunta) values (?,?,?,?)";
-			$db->execute($sql, array($question->Description,"ACT",$question->Quizze->Id,$question->QuestionType->Id));
+			$db->execute($sql, array($question->Description,"ACT",$question->Quiz->Id,$question->QuestionType->Id));
 		} catch (Exeption $e) {
 			throw new Exception($e->getMessage());
 		}
@@ -180,7 +180,7 @@ class QuestionService implements IBaseService {
 			$question = json_decode($data);
 			$db = Database::getConnection();
 			$sql = "update pregunta set descripcion=?,idCuestionario=?,idTipoPregunta=? where id=?";
-			$db->execute($sql, array($question->Description,$question->Quizze->Id,$question->QuestionType->Id,$question->Id));
+			$db->execute($sql, array($question->Description,$question->Quiz->Id,$question->QuestionType->Id,$question->Id));
 		} catch (Exeption $e) {
 			throw new Exception($e->getMessage());
 		}
@@ -190,6 +190,8 @@ class QuestionService implements IBaseService {
 		try {
 			$db = Database::getConnection();
 			$sql = "update pregunta set estado=? where id=?";
+			$db->execute($sql, array("INA",$id));
+			$sql = "update respuesta set estado=? where idPregunta=?";
 			$db->execute($sql, array("INA",$id));
 		} catch (Exeption $e) {
 			throw new Exception($e->getMessage());

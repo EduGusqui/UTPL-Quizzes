@@ -117,20 +117,22 @@ class AnswerService implements IBaseService {
 
 	public static function update($data) {
 		try {
-			$answer = json_decode($data);
 			$db = Database::getConnection();
-			$sql = "update respuesta set descripcion=?,correcta=?,idPregunta=? where id=?";
-			$db->execute($sql, array($answer->Description,$answer->Correct,$answer->IdQuestion,$answer->Id));
+			$answers = json_decode($data);
+			foreach ($answers as $answer) {
+				$sql = "update respuesta set descripcion=?,correcta=?,idPregunta=? where id=?";
+				$db->execute($sql, array($answer->Description,$answer->Correct,$answer->Question->Id,$answer->Id));
+			}
 		} catch (Exception $e) {
 			throw new Exception($e->getMessage());
 		}
 	}
 
-	public static function delete($id) {
+	public static function delete($idQuestion) {
 		try {
 			$db = Database::getConnection();
-			$sql = "update pregunta set estado=? where id=?";
-			$db->execute($sql, array("INA",$id));
+			$sql = "update respuesta set estado=? where idPregunta=?";
+			$db->execute($sql, array("INA",$idQuestion));
 		} catch (Exeption $e) {
 			throw new Exception($e->getMessage());
 		}

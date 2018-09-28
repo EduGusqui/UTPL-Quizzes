@@ -45,6 +45,24 @@ class AssignQuizController extends RestService {
 		
 	}
 
+	public function getByTeacher($idUser) {
+		try {
+			$this->verifyToken();
+			$users = $this->service->getAssignationsByTeacher($idUser);
+			
+			if (!empty($users)) {
+				$this->response($this->json($users), 200);
+			}else {
+				$message = array('message'=>$this->get_error_message(404));
+				$this->response($this->json($message), 404);
+			}
+		}catch (Exception $e) {
+			$errorMessage = array('error'=>$this->get_error_message(500));
+			$this->response($this->json($errorMessage),500);
+		}
+		
+	}
+
 	public function create() {
 		try {
 			$this->verifyToken();

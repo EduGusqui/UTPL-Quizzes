@@ -32,6 +32,15 @@ switch ($_GET['url']) {
   case 'takesQuizzes':
     $controller = "TakeQuizController";
     break;
+  case 'configurations':
+    $controller = "ConfigurationController";
+    break;
+  case 'anonymous':
+    $controller = "UserAnonymousController";
+    break;
+  case 'categories':
+    $controller = "CategoryController";
+    break;
   default:
     header('HTTP/1.0 404 Not Found');
     break;

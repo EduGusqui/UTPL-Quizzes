@@ -4,6 +4,8 @@ require_once("WebApi/service/IBaseService.php");
 require_once("WebApi/model/QuizzeModel.php");
 require_once("WebApi/model/CourseModel.php");
 require_once("WebApi/model/UserModel.php");
+require_once("WebApi/model/CategoryModel.php");
+
 
 class QuizzeService implements IBaseService {
 	
@@ -12,9 +14,11 @@ class QuizzeService implements IBaseService {
 		try {
 			$db = Database::getConnection();
 			$sql = "select c.id, c.nombre, c.numero_intento, u.id as idUsuario, u.nombre as nombreUsuario, 
-					c.estado
+					c.estado, cur.id as idCurso, cur.nombre as nombreCurso, ca.id as idCategoria, ca.nombre as nombreCategoria
 					from cuestionario c 
 					left join usuario u on u.id = c.idProfesor
+					left join curso cur on cur.id = c.idCurso
+					left join categoria ca on ca.id = cur.id_categoria
 					where c.estado = ?";
 			$data = $db->executeAll($sql,array("ACT"));
 			
@@ -28,7 +32,18 @@ class QuizzeService implements IBaseService {
 				$user->Id = $data[$i]->idUsuario;
 				$user->FullName = $data[$i]->nombreUsuario;
 				$quizze->User = $user;
+				$course = new CourseModel();
+				$course->Id = $data[$i]->idCurso;
+				$course->Name = $data[$i]->nombreCurso;
+				
+				$category = new CategoryModel();
+				$category->Id = $data[$i]->idCategoria;
+				$category->Name = $data[$i]->nombreCategoria;
+				$course->Category = $category;
+
+				$quizze->Course = $course;
 				$quizzes[$i] = $quizze;
+				
 			}
 
 			if (!empty($quizzes))
@@ -45,10 +60,12 @@ class QuizzeService implements IBaseService {
 		try {
 			$db = Database::getConnection();
 			$sql = "select c.id, c.nombre, c.numero_intento, u.id as idUsuario, u.nombre as nombreUsuario, 
-						cur.id as idCurso, cur.nombre as nombreCurso, c.estado
+						cur.id as idCurso, cur.nombre as nombreCurso, c.estado,
+						ca.id as idCategoria, ca.nombre as nombreCategoria
 						from cuestionario c
 						left join usuario u on u.id = c.idProfesor
 						left join curso cur on cur.id = c.idCurso
+						left join categoria ca on ca.id = cur.id_categoria
 						where c.id = ? and c.estado = ?";
 			$data = $db->execute($sql,array($id, "ACT"));
 
@@ -65,6 +82,10 @@ class QuizzeService implements IBaseService {
 				$course = new CourseModel();
 				$course->Id = $data->idCurso;
 				$course->Name = $data->nombreCurso;
+				$category = new CategoryModel();
+				$category->Id = $data->idCategoria;
+				$category->Name = $data->nombreCategoria;
+				$course->Category = $category;
 				$quizze->Course = $course;
 
 				return $quizze;
@@ -79,10 +100,14 @@ class QuizzeService implements IBaseService {
 	public static function getQuizzesByRol($idUser) {
 		try {
 			$db = Database::getConnection();
-			$sql = "select c.id, c.nombre, c.numero_intento, c.estado
-					from cuestionario c 
-					where c.estado = ?
-					and c.idProfesor = ?";
+			$sql = "select c.id, c.nombre, c.numero_intento, u.id as idUsuario, u.nombre as nombreUsuario, 
+						cur.id as idCurso, cur.nombre as nombreCurso, c.estado,
+						ca.id as idCategoria, ca.nombre as nombreCategoria
+						from cuestionario c
+						left join usuario u on u.id = c.idProfesor
+						left join curso cur on cur.id = c.idCurso
+						left join categoria ca on ca.id = cur.id_categoria
+						where c.estado = ? and c.idProfesor = ?";
 			$data = $db->executeAll($sql,array("ACT", $idUser));
 			
 			for ($i = 0; $i < count($data); $i++) {
