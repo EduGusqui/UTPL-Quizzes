@@ -88,10 +88,10 @@ class AnswerController extends RestService {
 		}
 	}
 
-	public function delete($id) {
+	public function delete($idQuestion) {
 		try {
 			$this->verifyToken();
-			$result = $this->service->delete($id);
+			$result = $this->service->delete($idQuestion);
 			$message = array('status' => "Success", "msg" => "Successfully delete.");
 			$this->response($this->json($message),200);
 		}catch (Exception $e) {

@@ -47,10 +47,10 @@ class QuestionController extends RestService {
 		
 	}
 
-	public function getByQuizzeId($id) {
+	public function getByQuizId($id) {
 		try {
 			$this->verifyToken();
-			$questions = $this->service->getByQuizzeId($id);
+			$questions = $this->service->getByQuizId($id);
 
 			if (!empty($questions)) {
 				$this->response($this->json($questions), 200);

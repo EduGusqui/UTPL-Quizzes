@@ -5,6 +5,6 @@ class QuizzeModel {
 	public $AttemptNumber;
 	public $Status;
 	public $User;
-	//public $Course;
+	public $Course;
 }
 ?>
